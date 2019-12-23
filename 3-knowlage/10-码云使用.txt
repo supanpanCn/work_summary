@@ -1,0 +1,177 @@
+创建公钥
+	ssh-keygen -t rsa -C "su1372978934@163.com" （如果已经有了一个，则选择y重新生成）
+测试公钥是否可用
+	ssh -T git@gitee.com  
+初始化码云仓库
+	创建仓库（填写项目名称和去掉使用readme文件初始化这个仓库选项）
+        进行全局git配置
+	进入项目文件夹执行
+		--如果本地没有.git文件则使用git init初始化
+		--使用git status 查看下项目下是否有可提交的文件
+		--使用git add . 添加到缓存区
+		--使用git commit -m "说明" 保存到本地
+		--使用git status 重新查看当前项目（此时会返回当前所处分支）
+	关联到码云（码云页面生成的git指令<选择SSH模式>）
+	验证成功
+		--刷新码云的当前页面
+新功能开发
+	git branch 查看当前所处分支
+	git checkout -b branchname 本地创建并切换到新建分支（在master主分支上创建如果不在则		先切换到master）
+	git push 添加到码云 
+		--如果码云中已经存在则直接push；不存在则git push -u 云端仓库别名（origin） 			branchname
+开发完毕提交代码
+	git branch 查看当前所处分支
+	git status 检查文件状态
+	git add .  添加到暂存区
+	git commit -m "备注" 保存到本地分支
+	git push -u origin user 
+		--添加到码云，第一次码云中如果没有user分支，必须加-u origin 分支名
+		--如果分支已经存在则直接push
+	合并到主分支（本地）
+		--git checkout master 切换到主分支
+		--git merge branchname 合并到主分支
+	git push
+		--将本地已经合并过的master推送到码云
+-------------------------------------------------------------------------------------
+克隆远程仓库
+	git remote add origin git仓库地址
+	git clone ssh地址，会默认克隆master上的内容，这里只有三个文件
+	进入clone下来的文件夹，执行创建本地分支(git checkout -b dev)
+	通过git pull拉取远程仓库中的最新版本并合并保存到本地
+	git branch --set-upstream-to=origin/本地与远程的对应名称 本地与远程的对应名称      将新分支与远程分支进行连接
+	然后git pull 拉取
+功能完成后提交
+	git add 待提交的文件名称   （不熟悉时，请一个一个提交，自己改动了几个旧提交几个，如果使用git status发现超出了自己的修改数，要当心冲突）
+	git commit -m "改动说明" 将修改文件保存到本地仓库
+如果想撤销提交
+	git reset --hard HEAD^  这会倒退到上一次的版本提交commit，本次新创建或者修改的版本将删除 （可以使用git cat 文件名称查看文件内容；并且此时使用git log后查看，会发现本地库中上一次的提交旧已经删除了）
+	git log --pretty=oneline  获取commitID
+	git reset --hard commitID 回退到指定版本(commitID是git log --pretty=oneline的返回值《必须在回退前》；此时在上一步被删除的版本就已经在commit中恢复了)
+	git reflog 会返回所有对版本库的访问操作
+如果想撤销修改（误删）
+	git reset HEAD fileName  撤销已经添加到缓存区的指定文件
+	git checkout -- fileName 撤销指定文件的修改（--与fileName之间加空格）
+链接并推送远程库
+	git remote add origin 仓库地址
+从远程库克隆
+	git clone 仓库地址 （git pull 拉取最新的版本）
+建立目标分支的次分支
+	git checkout -b 次分支  创建次分支dev (在分支上开发完成后add+commit提交，然后切换为目标分支)
+基于目标分支合并
+	git merge 次分支
+合并后删除
+	git branch -d 次分支
+如果合并分支遇见冲突
+	模拟冲突
+		git checkout -b 次分支 创建新分支
+		在新分支上修改上一次由dev提交的修改并完成后提交
+		切换到master（Your branch is ahead of 'origin/master' by 1 commit）
+		在master分支上再次对指定文件修改并提交
+		git merge 次分支 产生冲突（fix conflicts and then commit the result）
+	解决
+		git status 查看冲突文件（both modified便列出了冲突文件）
+		将<<<<<<<，=======，>>>>>>>部分删除或者修改后重新提交（这相当于让冲突的文件公用一个）
+多人协作
+	git push origin dev 基于当前分支推送指定远程分支
+
+-----------------------------------------------------------本地仓库--------------------------------------
+1-添加到暂存区     git add 单个改动文件或者.所有
+2-保存到本地仓库      git commit -m ‘变动说明’ 
+3-查看仓库中有变动的文件         git status 
+4-查看具体变动了那些内容         git diff 
+5-查看文件内容     cat fileName
+6-版本切换
+	git log 查看提交的历史版本
+	git reset --hard HEAD^   每一个^标识一个版本回退，多时使用~number按版本提交顺序向上回退
+	git reset --hard commit_id   指定回退的版本，commit_id通过git log获取
+   	git reflog 查看执行的命令历史，从而拿到commit_id切换到指定版本
+7-撤销修改
+	撤销工作区修改       git checkout --fileName 
+	撤销已添加到暂存区的修改 
+		git reset HEAD filenName 回退到工作区
+		git checkout --fileName 撤销工作区修改
+	撤销已保存到本地仓库的修改
+		git reset --hard HEAD^
+8-删除已添加到本地仓库的文件
+	git rm fileName
+	git commit -m '变动说明'
+-----------------------------------------------------------关联远程仓库（本地库已存在）--------------------------------------
+1-使用远程仓库
+	创建ssh key    ssh-keygen -t rsa -C "mySelfEmail"
+	添加密钥，这是后续有权推送的关键
+2-关联远程仓库
+	git remote add origin git@github.com:GitHub账号/learngit.git
+3-推送到远程仓库
+	git push -u origin branchName  远程仓库没有时执行
+	git push  远程仓库已存在
+-----------------------------------------------------------克隆远程仓库（远程库已存在）--------------------------------------
+1-git remote -v 查看远程仓库地址
+2-git clone 远程仓库地址
+-----------------------------------------------------------分支管理--------------------------------------
+1-git checkout -b newBranchName 创建并切换到新分支
+2-git branch 查看当前所处分支
+3-git add . 将分支的所有修改文件添加到缓存区
+4-git commit -m '变动说明'  将添加到缓存区的文件保存到本地仓库
+5-git push -u origin newBranchName/git push  将当前分支推送到远程仓库
+6-git branch master 切换到主分支
+7-git merge newBranchName 基于主分支合并新分支
+8-git branch -d newBranchName    删除指定分支
+9-git push 将本地主分支推送到远程仓库
+----------------------------------------------------------链接远程仓库-------------------------------
+1.生层ssh后，进入ssh文件，执行ls列出文件目录
+2.cat id_rsa.pub 获取公钥
+3.cd Desktop  进入桌面
+----------------------------------------------------------github账号密码-------------------------------
+用户名：supanpanCn
+邮箱：1372978934@qq.com
+密码：邮箱密码
+----------------------------------------------------------创建gitHub仓库并关联-------------------------------
+1-登录后右上角选择new repositroy
+2-填写仓库名称后创建
+3-cd ~/.ssh  检测是否有ssh，如果返回为空
+4-clip < ~/.ssh/id_rsa.pub  复制ssh
+5-https://github.com/settings/keys  添加
+6-git remote add origin 仓库地址  关联仓库
+7-git push -u origin master 
+	返回src refspec master does not match any
+		--touch README
+		--git add README
+		--git commit -m 'first commit'
+		--git push origin master
+6-git checkout -b dev
+7-git add + git commit
+8-git push origin dev
+----------------------------------------------------------从gitHub仓库获取-------------------------------
+抓取分支并远程关联
+	git clone 仓库地址 （默认master）
+	git checkout -b dev origin/dev
+开发完成后基于dev添加（可以先git branch查看下当前所处分支）
+	git add + git commit
+	git push origin dev
+如果有人对同一文件进行了修改并且先于你提交那么会报错（failed to push some refs to）
+	使用git pull 拉取最新的代码进行冲突解决（fix conflicts and then commit the result）
+	git add + git commit 重新提交（如果实际上没有冲突，只是分支超前，是可以直接提交的，不过最好使用git status先看下状态）
+	git push origin dev 提交即可
+----------------------------------------------------------本地推送到gitHub---------------------------
+git remote add origin git仓库地址
+git clone ssh地址，会默认克隆master上的内容，这里只有三个文件
+进入clone下来的文件夹，执行创建本地分支(git checkout -b dev)
+git push origin dev 将本地分支推送到远程（如果远程没有该分支时候执行）
+通过git pull拉取远程仓库中的最新版本并合并保存到本地
+git branch --set-upstream-to=origin/本地与远程的对应名称 本地与远程的对应名称      将新分支与远程分支进行连接
+然后git pull 拉取
+	
+	
+	
+	
+
+
+
+	
+	
+	
+	
+		
+		
+	
+		

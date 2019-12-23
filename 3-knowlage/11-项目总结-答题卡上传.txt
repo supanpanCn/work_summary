@@ -1,0 +1,117 @@
+1-浏览器刷新前保存数据
+	window.onbeforeunload = ev => {
+      		localStorage.setItem(dataName, dataValue)
+    	}
+2-下载文件(跨域情况下不生效)
+	let url = path
+      	let link = document.createElement("a")
+      	let ev = new MouseEvent('click')
+      	link.download = fileName
+      	link.href = url
+      	document.body.appendChild(link)
+      	link.dispatchEvent(ev)
+3-解决跨域问题
+	在webpack.dev.config中利用copy-webpack-plugin插件导入env.js
+	根文件夹创建env.js --> axios中引入env.js中定义的api接口
+	index.html中引入env.js
+4-监听浏览器后退前进 popstate
+5-表格自定义索引
+	type=‘index’ +  :index='func' + function(val){return (this.pages.current-1) * this.pages.per_page+val+1}
+6-下载图片
+	downPaper(ev,src){
+      		if (ev.target.className == "") return
+      		var canvas = document.createElement("canvas")
+      		var img = document.createElement("img")
+      		img.onload = function(e) {
+        			canvas.width = img.width
+        			canvas.height = img.height
+        			var context = canvas.getContext("2d")
+        			context.drawImage(img, 0, 0, img.width, img.height)
+        			canvas.getContext("2d").drawImage(img, 0, 0, img.width, img.height)
+        			canvas.toBlob(blob => {
+          				let link = document.createElement("a")
+          				link.href = window.URL.createObjectURL(blob)
+          				link.download = "aaa"
+          				link.click()
+        			}, "image/png")
+      		}
+      		img.setAttribute("crossOrigin", "Anonymous")
+      		img.src = src
+    	}
+7-下载pdf
+	handleDownload(url, name) {
+    		this.getBlob(url).then(blob => {
+        			saveAs(blob, name)
+    		})
+    		return false
+	}
+	getBlob(url) {
+    		return new Promise(resolve => {
+        			const xhr = new XMLHttpRequest();
+        			xhr.open('GET', url, true)
+        			xhr.responseType = 'blob'
+        			xhr.onload = () => {
+            			if (xhr.status === 200) {
+            				resolve(xhr.response)
+            			}
+        		}
+        		xhr.send()
+    		})
+	}
+8-input默认placeholder字体颜色
+	input::-webkit-input-placeholder {
+  		color: #333 !important
+	}
+	input::-moz-input-placeholder {
+  		color: #333 !important
+	}
+	input::-ms-input-placeholder {
+  		color: #333 !important
+	}
+9-扫描仪状态
+	getStatus(){  127.0.0.1:5000
+		this.$axios.get(url).then(res=>{})
+		this.Socket = new WebSocket(WS_URL)  //打开WebSocket连接
+  		this.Socket.onmessage = this.on_message  //on_message成为接受信息函数，会被连接自动调用
+  		this.interval = setInterval(()=>{   //定时器每隔一段时间获取当前连接状态
+    			this.is_connect = this.Socket.readyState === 1;
+    			this.reconnect();
+  		},100)
+	}
+	reconnect(){
+        		if(this.Socket.readyState === 3){    //如果readyState为3表示连接已断开，进行关闭连接并且重连
+          			this.Socket.close()
+          			this.Socket = new WebSocket(WS_URL)
+          			this.Socket.onmessage = this.on_message
+        		}
+     	}
+10-表格自定义空数据显示
+	<template slot="empty" >yourSelfContent</template>
+11-重复路由报错
+	const originalPush = Router.prototype.push
+		Router.prototype.push = function push(location) {
+  		return originalPush.call(this, location).catch(err => err)
+	}
+12-安装依赖报错
+	npm install chromedriver --chromedriver_cdnurl=http://cdn.npm.taobao.org/dist/chromedriver 完成操作之后重新创建一下项目（这种方法并不是一劳永逸的）
+	npm cache clean --force 清除npm的缓存（如果不行就证明不是缓存的问题）
+	如果以上两步还是不行 重新安装以下淘宝源
+	npm install -g cnpm --registry=https://registry.npm.taobao.org
+	找到你电脑 C:\Users\Administrator 找到.vuerc 这个文件，将useTaobaoRegistry置为false
+13-使用less
+	安装less和less-loader
+14-路由默认为/，因此路由规则的第一项一定是{
+			path:'/'
+			redirect:routerPage
+		}
+15-this.$set和this.$forceUpdate()都可以强制更新组件，后者更简单粗暴
+16-路由跳转后处理数据  watch监听route对象
+	watch{
+		'$route':'methodsFn'
+	}
+     路由跳转前处理数据  beforeRouteLeave
+17-this.$parent 调用父组件的方法，尽管this.$parent也可以获取到父组件的数据，但是不推荐这么做
+18-定义页面进入时的显示位置  scrollBehavior函数
+19-路由传参统一使用query，这是由于当使用path时params时无效的
+20-beforeRouteUpdate  在路由改变但是组件被复用时调用
+21-可以使用meta字段给路由定制信息，后可以通过this.$route.matched去进行匹配	

@@ -1,0 +1,43 @@
+1-修改伪元素样式和content
+	通过attr函数获取注册在父元素上的值
+	通过类名切换样式
+2-在vh布局中可以通过padding-bottom+父元素overflow:hidden解决元素高度问题
+3-在vuex-persistedstate插件中配置paths数组，可指定需要持久化的页面，默认为全部
+4-数学公式插件   MathJax
+5-使用v-html识别文本中的html代码
+6-权限管理
+	--在需要控制权限的路由处定义元信息meta
+	--在全局守卫中进行路由控制
+		-通过to.matched.some检测是否需要登录权限
+		-判断是否已登录
+			~登录，则直接跳转
+			~未登录
+				有token，获取用户信息（try...catch）
+				无token，跳转到登录页
+7-配置接口
+	在根目录生成env.js,并在index.html和ajax.API中引入
+	在build目录下的webpack.dev.config.js中的CopyWebpackPlugin中新增如下代码
+		{
+        			from: path.resolve(__dirname, '../env.js'),
+        			ignore: ['.*']
+      		}
+8-vue init webpack projectName 搭建非vue3的项目结构
+9-input光标颜色   caret-color:red  
+10-打包app
+	将config文件夹下的index.js中的build对象中的assetsPublicPath修改为'./'
+	执行npm run build 生成dist目录
+	打开hbuilderX生成5+app项目
+	保留unpackage和manifest.json
+	将index.html替换成run build后的index
+	将static作为同级目录
+11-更新app	
+	修改manifest.json中版本号
+	选择发行中的移动app资源升级包
+	将生成的wgt提交到服务器
+	之后在index.html实现具体的更新方法
+12-去除ie浏览器input的关闭按钮
+	input::-ms-clear { display: none; } 
+13-等待v-html渲染完毕之后在传入id
+14-watch无法监听input框输入的小数点
+	先尝试使用了document.addEventListener去监听键盘事件，在用户输入'.'时拿到data中的值进行覆盖，结果行不通（应该是1和1.在input看来是一样的缘故）
+	最后通过在input上监听keyup事件，用户输入'.'时对原来的值扩大10倍，在watch中在缩小10倍

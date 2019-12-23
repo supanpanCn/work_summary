@@ -1,0 +1,57 @@
+----------------------------------------------字符串------------------------------------------
+1-遍历：for...of
+2-模版字符串：``
+3-判断：includes、startsWith、endsWith
+4-补全：padStart、padEnd
+5-去空格：trim、trimStart、trimEnd
+6-取所有匹配结果：matchAll
+----------------------------------------------Math对象---------------------------------------
+1-取整：ceil、floor、trunc（剔除小数）
+2-判断正负及零：sign
+----------------------------------------------数  组-------------------------------------------
+1-扩展运算符：...array 或 表达式 （深度克隆、数组合并、将字符串转为数组）
+2-伪数组转化：from
+3-扩展运算的逆：of
+4-覆盖替换掉数组中的指定成员：copyWithin
+5-查找：find、findIndex
+6-填充数组：fill
+7-遍历：entries、keys、values、for...of
+8-判断：includes
+9-降维：flat
+----------------------------------------------对  象-------------------------------------------
+1-枚举：for...in、Object.keys、Object.values、Object.entries、Object.getOwnPropertyNames
+2-结构赋值：等号是默认值、冒号是起别名、扩展运算符只能在最后一个表示取剩余所有
+3-判断：Object.is
+4-对象合并：Object.assign
+5-数组与对象的互转操作：keys-values-entries（遍历对象返回数组）  fromEntries（键值对数组转为对象，可配合URLSearchParams对象，将查询字符串转为对象）
+--------------------------URL查询参数对象（URLSearchParams ）--------------------------
+1-append：插入新的键值对
+2-delete：删除
+3-entries、keys和values：遍历
+4-get：获取第一个查询参数值
+5-getAll：获取所有查询参数值，并返回一个数组
+6-has：判断
+7-set：设置新值
+8-sort：按照键名排序
+9-toString：转化为字符串
+----------------------------------------------Set数组和weakSet对象（都是成员唯一）-----------------------------
+1-数组和字符串去重：[...new Set(waiting operated arr)]  [...new Set(waiting operated str)].join('') Array.from(new Set(arr))
+2-获取成员数：size
+3-添加和删除：add、delete、clear
+4-判断：has
+5-按照预定义的顺序执行函数列表：new Set().forEach((v,i)=>{})
+6-并集、交集和差集：
+	并集：new Set([...arr1,...arr2])
+	交集：new Set([...arr1].filter(v=>arr2.includes(v)))     (如果箭头函数的函数体被花括号包裹，必须显示的使用return返回)	
+	差集：同交集，filter判断取反即可
+7-遍历
+	keys、values、entries、forEach
+----------------------------------------------解构赋值-------------------------------------------
+1-let [a,b,c] = [1,2,3]   只要等号两边的模式一致即可
+
+
+
+
+
+
+

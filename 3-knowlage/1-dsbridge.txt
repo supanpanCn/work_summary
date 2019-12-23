@@ -1,0 +1,2 @@
+使用dsBridge.register()接收安卓请求
+通过dsBridge.call(约定的请求名称，参数，回调)向安卓发送请求
