@@ -246,5 +246,24 @@
 			"}",
 		],
 		"description": "spanÔªËØ"
+	},
+	"family":{
+		"prefix": "css-family",
+		"body": [
+			"@family:${1:SYCT}"
+		],
+		"description": "×ÖÌå"
+	},
+	"pad":{
+		"prefix": "css-pad",
+		"body": [
+			".pad(@left,@top,@right,@bottom){",
+				"\tpadding-left:@left;",
+				"\tpadding-top:@top;",
+				"\tpadding-right:@right;",
+				"\tpadding-bottom:@bottom;",
+			"}"
+		],
+		"description": "padding"
 	}
 }
